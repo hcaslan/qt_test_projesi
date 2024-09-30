@@ -1,0 +1,87 @@
+[
+    {
+        "classes": [
+            {
+                "className": "CustomerModel",
+                "methods": [
+                    {
+                        "access": "public",
+                        "arguments": [
+                            {
+                                "name": "customerId",
+                                "type": "QString"
+                            }
+                        ],
+                        "name": "addCustomer",
+                        "returnType": "void"
+                    },
+                    {
+                        "access": "public",
+                        "arguments": [
+                            {
+                                "name": "customerId",
+                                "type": "QString"
+                            }
+                        ],
+                        "name": "customerExists",
+                        "returnType": "bool"
+                    },
+                    {
+                        "access": "public",
+                        "arguments": [
+                            {
+                                "name": "index",
+                                "type": "int"
+                            }
+                        ],
+                        "name": "selectCustomer",
+                        "returnType": "void"
+                    },
+                    {
+                        "access": "public",
+                        "arguments": [
+                            {
+                                "name": "model",
+                                "type": "QString"
+                            },
+                            {
+                                "name": "airbags",
+                                "type": "int"
+                            }
+                        ],
+                        "name": "addCarToCustomer",
+                        "returnType": "void"
+                    },
+                    {
+                        "access": "public",
+                        "name": "getSelectedCustomerId",
+                        "returnType": "QString"
+                    }
+                ],
+                "object": true,
+                "qualifiedClassName": "CustomerModel",
+                "signals": [
+                    {
+                        "access": "public",
+                        "arguments": [
+                            {
+                                "name": "errorMessage",
+                                "type": "QString"
+                            }
+                        ],
+                        "name": "errorOccurred",
+                        "returnType": "void"
+                    }
+                ],
+                "superClasses": [
+                    {
+                        "access": "public",
+                        "name": "QAbstractListModel"
+                    }
+                ]
+            }
+        ],
+        "inputFile": "CustomerModel.h",
+        "outputRevision": 68
+    }
+]

@@ -1,0 +1,6 @@
+<RCC>
+  <qresource prefix="/qt/qml/qt_test_projesi/">
+    <file alias="Main.qml">C:/Users/hcasl/OneDrive/Documents/qt_test_projesi/Main.qml</file>
+  </qresource>
+</RCC>
+

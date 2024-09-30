@@ -1,0 +1,5 @@
+module qt_test_projesi
+typeinfo appqt_test_projesi.qmltypes
+prefer :/qt/qml/qt_test_projesi/
+Main 1.0 Main.qml
+
