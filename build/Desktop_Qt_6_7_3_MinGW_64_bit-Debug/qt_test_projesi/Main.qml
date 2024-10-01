@@ -18,21 +18,24 @@ ApplicationWindow {
         padding: 20
         height: parent.height
 
+
         // Button Row
         Row {
+            width: parent.width
             spacing: 10
+            padding: 20
             anchors.horizontalCenter: parent.horizontalCenter
 
             Button {
-                text: "Open Add Customer"
-                width: 150
+                text: "Add Customer"
+                width: (parent.width - 50) * 0.5
                 onClicked: {
                     addCustomerDialog.open();
                 }
             }
             Button {
-                text: "Open Add Car"
-                width: 150
+                text: "Add Car to Customer"
+                width: (parent.width - 50) * 0.5
                 onClicked: {
                     addCarDialog.open();
                 }
@@ -173,73 +176,70 @@ ApplicationWindow {
             }
         }
 
-        // Display Customers and their Cars
-        /*
-        TableView {
-            width: parent.width
+        // A container that includes both the headers and the TableView
+        Column {
+            width: parent.width - 40
             height: parent.height
-            model: customerModel
 
-            delegate: Row {
-                spacing: 10
-                height: 50
+            // Header
+            Rectangle {
+                width: parent.width
+                height: 40
+                color: "lightgray"
+                border.color: "black"
+                Row {
+                    spacing: 10
+                    width: parent.width
+                    height: parent.height
 
-                Rectangle {
-                    width: 200
-                    height: 50
-                    color: "lightgray"
                     Text {
+                        text: "Customers"
                         anchors.centerIn: parent
-                        text: model.customerId
-                    }
-                }
-
-                Rectangle {
-                    width: 400
-                    height: 50
-                    color: "lightblue"
-                    Text {
-                        anchors.centerIn: parent
-                        text: model.cars
                     }
                 }
             }
-        }
-        */
 
-        // TableView to display customers
-        TableView {
-            width: parent.width
-            height: parent.height
-            model: customerModel
-            clip: true
-
-
-
-            // Columns for Customer ID
-            delegate: Rectangle {
-                color: "lightgray"
-                border.color: "black"
-
+            TableView {
+                id: tableView
                 width: parent.width
-                height: 50
+                height: parent.height - 40
+                model: customerModel
+                clip: true
 
-                Row {
-                    spacing: 10
-                    anchors.fill: parent
-
-                    Text {
-                        anchors.centerIn: parent
-                        text: model.customerId
+                // Specify column width using columnWidthProvider
+                columnWidthProvider: function (column) {
+                    if (column === 0) {
+                        return parent.width;
                     }
+                    return 150; // Default width for other columns
                 }
 
-                MouseArea {
-                    anchors.fill: parent
-                    onClicked: {
-                        selectedCustomer = model
-                        console.log(selectedCustomer.customerId)
-                        carDialog.open()
+                // Delegate for displaying customer data
+                delegate: Rectangle {
+                    width: tableView.columnWidth
+                    height: 50
+                    color: "#F7D358"
+                    border.color: "lightgray"
+
+                    Row {
+                        spacing: 10
+                        width: parent.width
+                        height: parent.height
+
+                        Text {
+                            anchors.centerIn: parent
+                            text: model.customerId
+                        }
+                    }
+
+                    MouseArea {
+                        anchors.fill: parent
+                        onClicked: {
+                            selectedCustomer = model;
+                            console.log(selectedCustomer.customerId)
+                            carTableView.updateCarList();
+                            carDialog.open();
+                        }
                     }
                 }
             }
@@ -254,54 +254,112 @@ ApplicationWindow {
             standardButtons: Dialog.Ok | Dialog.Cancel
             contentItem: Column {
                 spacing: 10
-                padding: 30
+                padding: 20
                 anchors.fill: parent
 
                 Text {
-                    text: "Customer ID: " + (selectedCustomer ? selectedCustomer.customerId : "")
+                    topPadding: 10
+                    text: "Customer ID: " + (selectedCustomer ? selectedCustomer.customerId : "N/A")
                 }
 
-                TableView {
-                    id: carTableView
-                    width: parent.width
+                Column {
+                    id: carColumn
+                    width: parent.width-40
                     height: parent.height
-                    clip: true
-                    model: ListModel {
-                        Component.onCompleted: {
-                            if (selectedCustomer) {
-                                clear()
-                                for (var i = 0; i < selectedCustomer.cars.length; i++) {
-                                    console.log("Evet")
-                                    append({
-                                        "carModel": selectedCustomer.cars[i].model,
-                                        "airbags": selectedCustomer.cars[i].airbags
-                                    })
+
+                    Rectangle {
+                        width: carColumn.width
+                        height: 40
+                        color: "transparent"
+
+                        Row {
+                            width: carColumn.width
+                            height: parent.height
+
+                            // First Header: Model
+                            Rectangle {
+                                width: carColumn.width * 0.5
+                                height: parent.height
+                                color: "lightgray"
+                                border.color: "black"
+                                Text {
+                                    anchors.centerIn: parent
+                                    text: "Model"
+                                }
+                            }
+
+                            // Second Header: Airbag Count
+                            Rectangle {
+                                width: carColumn.width * 0.5
+                                height: parent.height
+                                color: "lightgray"
+                                border.color: "black"
+                                Text {
+                                    anchors.centerIn: parent
+                                    text: "Airbag Count"
                                 }
                             }
                         }
                     }
 
-                    delegate: Row {
-                        spacing: 10
-                        height: 50
+                    TableView {
+                        id: carTableView
+                        width: carColumn.width
+                        height: parent.height - 40
 
-                        Rectangle {
-                            width: 200
+
+                        model: ListModel {
+                            id: carListModel
+                        }
+
+                        delegate: Row {
+                            width: carColumn.width
                             height: 50
-                            color: "lightgray"
-                            Text {
-                                anchors.centerIn: parent
-                                text: model.carModel
+
+                            // Column for carModel
+                            Rectangle {
+                                width: carColumn.width * 0.5
+                                height: 50
+                                color: "#F7D358"
+                                border.color: "lightgray"
+                                Text {
+                                    anchors.centerIn: parent
+                                    text: model.carModel
+                                }
+                            }
+
+                            // Column for airbags
+                            Rectangle {
+                                width: carColumn.width * 0.5
+                                height: 50
+                                color: "#F7D358"
+                                border.color: "lightgray"
+                                Text {
+                                    anchors.centerIn: parent
+                                    text: model.carAirbags
+                                }
                             }
                         }
 
-                        Rectangle {
-                            width: 400
-                            height: 50
-                            color: "lightblue"
-                            Text {
-                                anchors.centerIn: parent
-                                text: model.airbags
+                        function updateCarList() {
+                            carListModel.clear();  // Clear existing data first
+
+                            if (selectedCustomer.customerId >= 0) {  // Check if a customer is selected (index is valid)
+                                let models = selectedCustomer.carModels;  // Get car models of selected customer
+                                let airbags = selectedCustomer.airbagsList;  // Get car airbags of selected customer
+
+                                if (models.length > 0) {
+                                    for (let i = 0; i < models.length; i++) {
+                                        carListModel.append({ carModel: models[i], carAirbags: airbags[i] });
+                                    }
+                                }else {
+                                    carListModel.append({
+                                        carModel: "No Data",
+                                        carAirbags: "No Data"
+                                    });
+                                }
+                            } else {
+                                console.log("No customer selected.");  // Handle case where no customer is selected
                             }
                         }
                     }

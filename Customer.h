@@ -7,8 +7,6 @@
 #include <QList>
 #include <QJsonObject>
 #include <QJsonArray>
-#include <QJsonDocument>
-#include <QFile>
 
 class Customer {
 public:

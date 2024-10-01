@@ -10,15 +10,15 @@ int CustomerModel::rowCount(const QModelIndex &parent) const {
     Q_UNUSED(parent)
     return customers.size();
 }
-
 QVariant CustomerModel::data(const QModelIndex &index, int role) const {
     if (index.row() < 0 || index.row() >= customers.size())
         return QVariant();
 
     const Customer &customer = customers[index.row()];
 
-    if (role == CustomerIdRole)
+    if (role == CustomerIdRole) {
         return customer.id;
+    }
     else if (role == CarsRole) {
         QStringList carList;
         for (const Car &car : customer.cars) {
@@ -26,13 +26,31 @@ QVariant CustomerModel::data(const QModelIndex &index, int role) const {
         }
         return carList.join(", ");
     }
+    else if (role == CarModelRole) {
+        QStringList carModels;
+        for (const Car &car : customer.cars) {
+            carModels.append(car.model);
+        }
+        return carModels;
+    }
+    else if (role == CarAirbagsRole) {
+        QStringList airbagsList;
+        for (const Car &car : customer.cars) {
+            airbagsList.append(QString::number(car.airbags));
+        }
+        return airbagsList;
+    }
+
     return QVariant();
 }
+
 
 QHash<int, QByteArray> CustomerModel::roleNames() const {
     QHash<int, QByteArray> roles;
     roles[CustomerIdRole] = "customerId";
     roles[CarsRole] = "cars";
+    roles[CarModelRole] = "carModels";
+    roles[CarAirbagsRole] = "airbagsList";
     return roles;
 }
 
@@ -73,6 +91,49 @@ QString CustomerModel::getSelectedCustomerId() const {
         return customers[selectedCustomerIndex].id;
     }
     return QString();
+}
+
+// New methods from Customer class
+QString CustomerModel::getCarModel(int customerIndex, int carIndex) const {
+    if (customerIndex >= 0 && customerIndex < customers.size()) {
+        const Customer &customer = customers[customerIndex];
+        if (carIndex >= 0 && carIndex < customer.cars.size()) {
+            return customer.cars[carIndex].model;
+        }
+    }
+    return QString();
+}
+
+int CustomerModel::getCarAirbags(int customerIndex, int carIndex) const {
+    if (customerIndex >= 0 && customerIndex < customers.size()) {
+        const Customer &customer = customers[customerIndex];
+        if (carIndex >= 0 && carIndex < customer.cars.size()) {
+            return customer.cars[carIndex].airbags;
+        }
+    }
+    return -1;
+}
+
+QList<QString> CustomerModel::getAllCarModels(int customerIndex) const {
+    QList<QString> models;
+    if (customerIndex >= 0 && customerIndex < customers.size()) {
+        const Customer &customer = customers[customerIndex];
+        for (const Car &car : customer.cars) {
+            models.append(car.model);
+        }
+    }
+    return models;
+}
+
+QList<int> CustomerModel::getAllCarAirbags(int customerIndex) const {
+    QList<int> airbagsList;
+    if (customerIndex >= 0 && customerIndex < customers.size()) {
+        const Customer &customer = customers[customerIndex];
+        for (const Car &car : customer.cars) {
+            airbagsList.append(car.airbags);
+        }
+    }
+    return airbagsList;
 }
 
 // Saving and loading methods

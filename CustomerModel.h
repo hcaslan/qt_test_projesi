@@ -11,7 +11,9 @@ class CustomerModel : public QAbstractListModel {
 public:
     enum CustomerRoles {
         CustomerIdRole = Qt::UserRole + 1,
-        CarsRole
+        CarsRole,
+        CarModelRole,
+        CarAirbagsRole
     };
 
     explicit CustomerModel(QObject *parent = nullptr);
@@ -25,6 +27,12 @@ public:
     Q_INVOKABLE void selectCustomer(int index);
     Q_INVOKABLE void addCarToCustomer(const QString &model, int airbags);
     Q_INVOKABLE QString getSelectedCustomerId() const;
+
+    // New methods added
+    Q_INVOKABLE QString getCarModel(int customerIndex, int carIndex) const;
+    Q_INVOKABLE int getCarAirbags(int customerIndex, int carIndex) const;
+    Q_INVOKABLE QList<QString> getAllCarModels(int customerIndex) const;
+    Q_INVOKABLE QList<int> getAllCarAirbags(int customerIndex) const;
 
     // Saving and loading methods
     void saveToFile(const QString &filePath);

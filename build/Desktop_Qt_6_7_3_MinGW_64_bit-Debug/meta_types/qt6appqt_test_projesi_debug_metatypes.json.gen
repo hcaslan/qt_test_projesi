@@ -56,6 +56,58 @@
                         "access": "public",
                         "name": "getSelectedCustomerId",
                         "returnType": "QString"
+                    },
+                    {
+                        "access": "public",
+                        "arguments": [
+                            {
+                                "name": "customerIndex",
+                                "type": "int"
+                            },
+                            {
+                                "name": "carIndex",
+                                "type": "int"
+                            }
+                        ],
+                        "name": "getCarModel",
+                        "returnType": "QString"
+                    },
+                    {
+                        "access": "public",
+                        "arguments": [
+                            {
+                                "name": "customerIndex",
+                                "type": "int"
+                            },
+                            {
+                                "name": "carIndex",
+                                "type": "int"
+                            }
+                        ],
+                        "name": "getCarAirbags",
+                        "returnType": "int"
+                    },
+                    {
+                        "access": "public",
+                        "arguments": [
+                            {
+                                "name": "customerIndex",
+                                "type": "int"
+                            }
+                        ],
+                        "name": "getAllCarModels",
+                        "returnType": "QList<QString>"
+                    },
+                    {
+                        "access": "public",
+                        "arguments": [
+                            {
+                                "name": "customerIndex",
+                                "type": "int"
+                            }
+                        ],
+                        "name": "getAllCarAirbags",
+                        "returnType": "QList<int>"
                     }
                 ],
                 "object": true,
