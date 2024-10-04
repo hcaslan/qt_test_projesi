@@ -342,11 +342,11 @@ ApplicationWindow {
                         }
 
                         function updateCarList() {
-                            carListModel.clear();  // Clear existing data first
+                            carListModel.clear();
 
-                            if (selectedCustomer.customerId >= 0) {  // Check if a customer is selected (index is valid)
-                                let models = selectedCustomer.carModels;  // Get car models of selected customer
-                                let airbags = selectedCustomer.airbagsList;  // Get car airbags of selected customer
+                            if (selectedCustomer.customerId >= 0) {
+                                let models = selectedCustomer.carModels;
+                                let airbags = selectedCustomer.airbagsList;
 
                                 if (models.length > 0) {
                                     for (let i = 0; i < models.length; i++) {
@@ -359,7 +359,7 @@ ApplicationWindow {
                                     });
                                 }
                             } else {
-                                console.log("No customer selected.");  // Handle case where no customer is selected
+                                console.log("No customer selected.");
                             }
                         }
                     }
